@@ -5,11 +5,19 @@
 		"ecmaVersion": 2020,
 		"sourceType": "module"
 	},
-	"plugins": ["@typescript-eslint", "no-secrets", "simple-import-sort"],
+	"plugins": [
+		"@typescript-eslint",
+		"no-secrets",
+		"simple-import-sort",
+		"sonarjs"
+	],
 	"extends": [
 		"plugin:@typescript-eslint/recommended",
 		"plugin:prettier/recommended",
 		"prettier/@typescript-eslint",
+		"plugin:sonarjs/recommended",
+		"plugin:regexp/recommended",
+		"eslint:recommended",
 		"prettier"
 	],
 	"rules": {
