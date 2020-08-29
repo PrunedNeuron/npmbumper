@@ -1,27 +1,77 @@
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
-import * as vscode from 'vscode';
+import vscode from "vscode";
 
-// this method is called when your extension is activated
-// your extension is activated the very first time the command is executed
-export function activate(context: vscode.ExtensionContext) {
+import StatusBarItem from "./model/StatusBarItem";
+import { newIssueUrl } from "./util/constants";
+import { getPackageJson, getArrayFromObject, getObjectFromArray } from "./util/helper";
+import Dependency from "./model/Dependency";
 
-	// Use the console to output diagnostic information (console.log) and errors (console.error)
-	// This line of code will only be executed once when your extension is activated
-	console.log('Congratulations, your extension "npm-bumper" is now active!');
+const statusBarItem = new StatusBarItem();
 
-	// The command has been defined in the package.json file
-	// Now provide the implementation of the command with registerCommand
-	// The commandId parameter must match the command field in package.json
-	let disposable = vscode.commands.registerCommand('npm-bumper.helloWorld', () => {
-		// The code you place here will be executed every time your command is executed
+export async function activate(context: vscode.ExtensionContext): Promise<void> {
+	const reportIssue = "Report issue";
+	const cancel = "Cancel";
+	const disposable: vscode.Disposable = vscode.commands.registerCommand(
+		"npm-bumper.bump",
+		async () => {
+			const packageJson = JSON.parse(await getPackageJson());
+			const rawDependencies = packageJson["dependencies"];
+			const rawDevDependencies = packageJson["devDependencies"];
 
-		// Display a message box to the user
-		vscode.window.showInformationMessage('Hello World from npm Bumper!');
-	});
+			let errorMessage = undefined;
+
+			if (rawDependencies === undefined && rawDevDependencies === undefined) {
+				errorMessage =
+					"Could not detect dependencies and devDependencies in your package.json";
+			} else if (rawDependencies === undefined) {
+				errorMessage = "Could not detect dependencies in your package.json";
+			} else if (rawDevDependencies === undefined) {
+				errorMessage = "Could not detect devDependencies in your package.json";
+			}
+
+			vscode.window
+				.showInformationMessage("Bumping dependencies...", reportIssue, cancel)
+				.then((selection) => {
+					if (selection === reportIssue) {
+						vscode.env.openExternal(vscode.Uri.parse(newIssueUrl));
+					} else if (selection === cancel) {
+						terminate();
+					}
+				});
+
+			if (errorMessage !== undefined) {
+				vscode.window.showErrorMessage(errorMessage);
+			} else {
+				const dependencies: Dependency[] = getArrayFromObject(rawDependencies);
+				const devDependencies: Dependency[] = getArrayFromObject(rawDevDependencies);
+
+				for (let dependency of dependencies) {
+					await dependency.fetchLatestVersion();
+				}
+
+				for (let devDependency of devDependencies) {
+					await devDependency.fetchLatestVersion();
+				}
+
+				const updatedDependencies = getObjectFromArray(dependencies);
+				const updatedDevDependencies = getObjectFromArray(devDependencies);
+
+				
+
+				// getLatestVersions(dependencies);
+			}
+		}
+	);
+
+	statusBarItem.updateText(`$(symbol-constructor) $(arrow-up)`);
+	statusBarItem.updateTooltip("Bump dependencies");
+	statusBarItem.setCommand("npm-bumper.bump");
 
 	context.subscriptions.push(disposable);
+	context.subscriptions.push(statusBarItem.get());
 }
 
-// this method is called when your extension is deactivated
-export function deactivate() {}
+export function terminate() {}
+
+export function deactivate(): void {
+	// TODO
+}
