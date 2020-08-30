@@ -43,6 +43,7 @@ export function getObjectFromArray(array: Dependency[]): Dependencies {
 
 export async function getUpdatedPackageJson(json: string): Promise<string> {
 	const packageJson = JSON.parse(json);
+
 	const rawDependencies = packageJson["dependencies"];
 	const rawDevDependencies = packageJson["devDependencies"];
 
@@ -67,7 +68,6 @@ export async function getUpdatedPackageJson(json: string): Promise<string> {
 		}
 
 		const updatedDevDependencies = getObjectFromArray(devDependencies);
-
 		updatedPackageJson["devDependencies"] = updatedDevDependencies;
 	}
 
