@@ -15,12 +15,11 @@ const statusBarItem = new StatusBarItem();
 export async function activate(context: vscode.ExtensionContext): Promise<void> {
 	const reportIssue = "Report issue";
 	const cancel = "Cancel";
-	const disposable: vscode.Disposable = vscode.commands.registerCommand(
+
+	const disposableBump: vscode.Disposable = vscode.commands.registerCommand(
 		"npm-bumper.bump",
 		async () => {
 			const packageJson = JSON.parse(await getPackageJson());
-
-			context.workspaceState.update("cachedPackageJson", packageJson);
 
 			const rawDependencies = packageJson["dependencies"];
 			const rawDevDependencies = packageJson["devDependencies"];
@@ -37,7 +36,7 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
 			}
 
 			vscode.window
-				.showInformationMessage("Bumping dependencies...", reportIssue, cancel)
+				.showInformationMessage("Bumping dependencies...", "Dismiss", reportIssue, cancel)
 				.then((selection) => {
 					if (selection === reportIssue) {
 						vscode.env.openExternal(vscode.Uri.parse(newIssueUrl));
@@ -63,9 +62,29 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
 				const updatedDependencies = getObjectFromArray(dependencies);
 				const updatedDevDependencies = getObjectFromArray(devDependencies);
 
-				writeJsonFile("package-backup.json", JSON.stringify(packageJson));
+				// Create backup file
+				writeJsonFile("package.backup.json", JSON.stringify(packageJson));
 
-				// getLatestVersions(dependencies);
+				// Cache original package json for recovery
+				context.workspaceState.update("cachedPackageJson", packageJson);
+
+				const updatedPackageJson = packageJson;
+				updatedPackageJson["dependencies"] = updatedDependencies;
+				updatedPackageJson["devDependencies"] = updatedDevDependencies;
+
+				writeJsonFile("package.json", JSON.stringify(updatedPackageJson));
+			}
+		}
+	);
+
+	const disposableUndo: vscode.Disposable = vscode.commands.registerCommand(
+		"npm-bumper.undo",
+		async () => {
+			const cachedPackageJson = context.workspaceState.get("cachedPackageJson");
+			if (cachedPackageJson === undefined) {
+				vscode.window.showWarningMessage("Could not find cached copy of package.json!");
+			} else {
+				writeJsonFile("package.json", JSON.stringify(cachedPackageJson));
 			}
 		}
 	);
@@ -74,7 +93,8 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
 	statusBarItem.updateTooltip("Bump dependencies");
 	statusBarItem.setCommand("npm-bumper.bump");
 
-	context.subscriptions.push(disposable);
+	context.subscriptions.push(disposableBump);
+	context.subscriptions.push(disposableUndo);
 	context.subscriptions.push(statusBarItem.get());
 }
 
