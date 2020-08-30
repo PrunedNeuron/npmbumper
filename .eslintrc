@@ -17,7 +17,6 @@
 		"prettier/@typescript-eslint",
 		"plugin:sonarjs/recommended",
 		"plugin:regexp/recommended",
-		"eslint:recommended",
 		"prettier"
 	],
 	"rules": {
