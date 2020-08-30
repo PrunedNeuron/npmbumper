@@ -19,6 +19,9 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
 		"npm-bumper.bump",
 		async () => {
 			const packageJson = JSON.parse(await getPackageJson());
+
+			context.workspaceState.update("cachedPackageJson", packageJson);
+
 			const rawDependencies = packageJson["dependencies"];
 			const rawDevDependencies = packageJson["devDependencies"];
 
@@ -60,7 +63,7 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
 				const updatedDependencies = getObjectFromArray(dependencies);
 				const updatedDevDependencies = getObjectFromArray(devDependencies);
 
-				writeJsonFile("package.json.backup", JSON.stringify(packageJson));
+				writeJsonFile("package-backup.json", JSON.stringify(packageJson));
 
 				// getLatestVersions(dependencies);
 			}
