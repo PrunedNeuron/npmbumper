@@ -19,6 +19,10 @@
 			{
 				"command": "npm-bumper.bump",
 				"title": "Bump dependencies"
+			},
+			{
+				"command": "npm-bumper.undo",
+				"title": "Undo bumping dependencies"
 			}
 		]
 	},
