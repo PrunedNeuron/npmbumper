@@ -1,9 +1,14 @@
 import vscode from "vscode";
 
+import Dependency from "./model/Dependency";
 import StatusBarItem from "./model/StatusBarItem";
 import { newIssueUrl } from "./util/constants";
-import { getPackageJson, getArrayFromObject, getObjectFromArray } from "./util/helper";
-import Dependency from "./model/Dependency";
+import {
+	getArrayFromObject,
+	getObjectFromArray,
+	getPackageJson,
+	writeJsonFile
+} from "./util/helper";
 
 const statusBarItem = new StatusBarItem();
 
@@ -44,18 +49,18 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
 				const dependencies: Dependency[] = getArrayFromObject(rawDependencies);
 				const devDependencies: Dependency[] = getArrayFromObject(rawDevDependencies);
 
-				for (let dependency of dependencies) {
+				for (const dependency of dependencies) {
 					await dependency.fetchLatestVersion();
 				}
 
-				for (let devDependency of devDependencies) {
+				for (const devDependency of devDependencies) {
 					await devDependency.fetchLatestVersion();
 				}
 
 				const updatedDependencies = getObjectFromArray(dependencies);
 				const updatedDevDependencies = getObjectFromArray(devDependencies);
 
-				
+				writeJsonFile("package.json.backup", JSON.stringify(packageJson));
 
 				// getLatestVersions(dependencies);
 			}
