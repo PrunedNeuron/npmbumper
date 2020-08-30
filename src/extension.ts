@@ -56,7 +56,7 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
 				statusBarItem.isLoading(true);
 
 				// get updated package.json as stringified json
-				const updatedPackageJson = await getUpdatedPackageJson(packageJson);
+				const updatedPackageJson = await getUpdatedPackageJson(JSON.stringify(packageJson));
 
 				// overwrite existing package.json with updated versions
 				writeJsonFile("package.json", updatedPackageJson);
