@@ -19,7 +19,7 @@ export default class StatusBarItem {
 	}
 
 	// Sets the command to be executed on click
-	setCommand(command: string): void {
+	setCommand(command: string | undefined): void {
 		this.statusBarItem.command = command;
 	}
 
@@ -31,5 +31,17 @@ export default class StatusBarItem {
 	// Update the status bar item tooltip text
 	updateTooltip(tooltip: string): void {
 		this.statusBarItem.tooltip = tooltip;
+	}
+
+	isLoading(state: boolean): void {
+		if (state) {
+			this.updateText("$(sync~spin)");
+			this.updateTooltip("Updating dependencies...");
+			this.setCommand(undefined);
+		} else {
+			this.updateText(`$(symbol-constructor) $(arrow-up)`);
+			this.updateTooltip("Bump dependencies");
+			this.setCommand("npm-bumper.bump");
+		}
 	}
 }
