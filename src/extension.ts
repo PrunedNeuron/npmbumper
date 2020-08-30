@@ -1,14 +1,8 @@
 import vscode from "vscode";
 
-import Dependency from "./model/Dependency";
 import StatusBarItem from "./model/StatusBarItem";
 import { newIssueUrl } from "./util/constants";
-import {
-	getArrayFromObject,
-	getObjectFromArray,
-	getPackageJson,
-	writeJsonFile
-} from "./util/helper";
+import { getPackageJson, getUpdatedPackageJson, writeJsonFile } from "./util/helper";
 
 const statusBarItem = new StatusBarItem();
 
@@ -56,31 +50,18 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
 						}
 					});
 
-				const dependencies: Dependency[] = getArrayFromObject(rawDependencies);
-				const devDependencies: Dependency[] = getArrayFromObject(rawDevDependencies);
-
-				for (const dependency of dependencies) {
-					await dependency.fetchLatestVersion();
-				}
-
-				for (const devDependency of devDependencies) {
-					await devDependency.fetchLatestVersion();
-				}
-
-				const updatedDependencies = getObjectFromArray(dependencies);
-				const updatedDevDependencies = getObjectFromArray(devDependencies);
-
 				// Create backup file
 				writeJsonFile("package.backup.json", JSON.stringify(packageJson));
 
-				// Cache original package json for recovery
-				context.workspaceState.update("cachedPackageJson", packageJson);
+				statusBarItem.isLoading(true);
 
-				const updatedPackageJson = packageJson;
-				updatedPackageJson["dependencies"] = updatedDependencies;
-				updatedPackageJson["devDependencies"] = updatedDevDependencies;
+				// get updated package.json as stringified json
+				const updatedPackageJson = await getUpdatedPackageJson(packageJson);
 
-				writeJsonFile("package.json", JSON.stringify(updatedPackageJson));
+				// overwrite existing package.json with updated versions
+				writeJsonFile("package.json", updatedPackageJson);
+
+				statusBarItem.isLoading(false);
 			}
 		}
 	);
@@ -97,9 +78,7 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
 		}
 	);
 
-	statusBarItem.updateText(`$(symbol-constructor) $(arrow-up)`);
-	statusBarItem.updateTooltip("Bump dependencies");
-	statusBarItem.setCommand("npm-bumper.bump");
+	statusBarItem.isLoading(false);
 
 	context.subscriptions.push(disposableBump);
 	context.subscriptions.push(disposableUndo);
