@@ -98,7 +98,9 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
 	context.subscriptions.push(statusBarItem.get());
 }
 
-export function terminate() {}
+export function terminate(): void {
+	// Do nothing. For now.
+}
 
 export function deactivate(): void {
 	// TODO
