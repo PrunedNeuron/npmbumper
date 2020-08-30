@@ -1,14 +1,8 @@
 import vscode from "vscode";
 
-import Dependency from "./model/Dependency";
 import StatusBarItem from "./model/StatusBarItem";
 import { newIssueUrl } from "./util/constants";
-import {
-	getArrayFromObject,
-	getObjectFromArray,
-	getPackageJson,
-	writeJsonFile
-} from "./util/helper";
+import { getPackageJson, getUpdatedPackageJson, writeJsonFile } from "./util/helper";
 
 const statusBarItem = new StatusBarItem();
 
@@ -29,50 +23,45 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
 			if (rawDependencies === undefined && rawDevDependencies === undefined) {
 				errorMessage =
 					"Could not detect dependencies and devDependencies in your package.json";
-			} else if (rawDependencies === undefined) {
-				errorMessage = "Could not detect dependencies in your package.json";
-			} else if (rawDevDependencies === undefined) {
-				errorMessage = "Could not detect devDependencies in your package.json";
-			}
-
-			vscode.window
-				.showInformationMessage("Bumping dependencies...", "Dismiss", reportIssue, cancel)
-				.then((selection) => {
-					if (selection === reportIssue) {
-						vscode.env.openExternal(vscode.Uri.parse(newIssueUrl));
-					} else if (selection === cancel) {
-						terminate();
-					}
-				});
-
-			if (errorMessage !== undefined) {
-				vscode.window.showErrorMessage(errorMessage);
-			} else {
-				const dependencies: Dependency[] = getArrayFromObject(rawDependencies);
-				const devDependencies: Dependency[] = getArrayFromObject(rawDevDependencies);
-
-				for (const dependency of dependencies) {
-					await dependency.fetchLatestVersion();
+				vscode.window
+					.showErrorMessage(errorMessage, "Dismiss", reportIssue)
+					.then((selection) => {
+						if (selection === reportIssue) {
+							vscode.env.openExternal(vscode.Uri.parse(newIssueUrl));
+						}
+					});
+			} else if (rawDependencies !== undefined || rawDevDependencies !== undefined) {
+				let message = "";
+				if (rawDependencies === undefined) {
+					message = "Bumping devDependencies...";
+				} else if (rawDevDependencies === undefined) {
+					message = "Bumping dependencies...";
+				} else {
+					message = "Bumping dependencies and devDependencies...";
 				}
 
-				for (const devDependency of devDependencies) {
-					await devDependency.fetchLatestVersion();
-				}
-
-				const updatedDependencies = getObjectFromArray(dependencies);
-				const updatedDevDependencies = getObjectFromArray(devDependencies);
+				vscode.window
+					.showInformationMessage(message, "Dismiss", reportIssue, cancel)
+					.then((selection) => {
+						if (selection === reportIssue) {
+							vscode.env.openExternal(vscode.Uri.parse(newIssueUrl));
+						} else if (selection === cancel) {
+							terminate();
+						}
+					});
 
 				// Create backup file
 				writeJsonFile("package.backup.json", JSON.stringify(packageJson));
 
-				// Cache original package json for recovery
-				context.workspaceState.update("cachedPackageJson", packageJson);
+				statusBarItem.isLoading(true);
 
-				const updatedPackageJson = packageJson;
-				updatedPackageJson["dependencies"] = updatedDependencies;
-				updatedPackageJson["devDependencies"] = updatedDevDependencies;
+				// get updated package.json as stringified json
+				const updatedPackageJson = await getUpdatedPackageJson(JSON.stringify(packageJson));
 
-				writeJsonFile("package.json", JSON.stringify(updatedPackageJson));
+				// overwrite existing package.json with updated versions
+				writeJsonFile("package.json", updatedPackageJson);
+
+				statusBarItem.isLoading(false);
 			}
 		}
 	);
@@ -89,16 +78,16 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
 		}
 	);
 
-	statusBarItem.updateText(`$(symbol-constructor) $(arrow-up)`);
-	statusBarItem.updateTooltip("Bump dependencies");
-	statusBarItem.setCommand("npm-bumper.bump");
+	statusBarItem.isLoading(false);
 
 	context.subscriptions.push(disposableBump);
 	context.subscriptions.push(disposableUndo);
 	context.subscriptions.push(statusBarItem.get());
 }
 
-export function terminate() {}
+export function terminate(): void {
+	// Do nothing. For now.
+}
 
 export function deactivate(): void {
 	// TODO

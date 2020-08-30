@@ -40,3 +40,36 @@ export function getObjectFromArray(array: Dependency[]): Dependencies {
 	});
 	return object;
 }
+
+export async function getUpdatedPackageJson(json: string): Promise<string> {
+	const packageJson = JSON.parse(json);
+
+	const rawDependencies = packageJson["dependencies"];
+	const rawDevDependencies = packageJson["devDependencies"];
+
+	const updatedPackageJson = packageJson;
+
+	if (rawDependencies !== undefined) {
+		const dependencies: Dependency[] = getArrayFromObject(rawDependencies);
+
+		for (const dependency of dependencies) {
+			await dependency.fetchLatestVersion();
+		}
+
+		const updatedDependencies = getObjectFromArray(dependencies);
+		updatedPackageJson["dependencies"] = updatedDependencies;
+	}
+
+	if (rawDevDependencies !== undefined) {
+		const devDependencies: Dependency[] = getArrayFromObject(rawDevDependencies);
+
+		for (const devDependency of devDependencies) {
+			await devDependency.fetchLatestVersion();
+		}
+
+		const updatedDevDependencies = getObjectFromArray(devDependencies);
+		updatedPackageJson["devDependencies"] = updatedDevDependencies;
+	}
+
+	return JSON.stringify(updatedPackageJson);
+}
