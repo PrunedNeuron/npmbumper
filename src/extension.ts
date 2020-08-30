@@ -29,25 +29,33 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
 			if (rawDependencies === undefined && rawDevDependencies === undefined) {
 				errorMessage =
 					"Could not detect dependencies and devDependencies in your package.json";
-			} else if (rawDependencies === undefined) {
-				errorMessage = "Could not detect dependencies in your package.json";
-			} else if (rawDevDependencies === undefined) {
-				errorMessage = "Could not detect devDependencies in your package.json";
-			}
+				vscode.window
+					.showErrorMessage(errorMessage, "Dismiss", reportIssue)
+					.then((selection) => {
+						if (selection === reportIssue) {
+							vscode.env.openExternal(vscode.Uri.parse(newIssueUrl));
+						}
+					});
+			} else if (rawDependencies !== undefined || rawDevDependencies !== undefined) {
+				let message = "";
+				if (rawDependencies === undefined) {
+					message = "Bumping devDependencies...";
+				} else if (rawDevDependencies === undefined) {
+					message = "Bumping dependencies...";
+				} else {
+					message = "Bumping dependencies and devDependencies...";
+				}
 
-			vscode.window
-				.showInformationMessage("Bumping dependencies...", "Dismiss", reportIssue, cancel)
-				.then((selection) => {
-					if (selection === reportIssue) {
-						vscode.env.openExternal(vscode.Uri.parse(newIssueUrl));
-					} else if (selection === cancel) {
-						terminate();
-					}
-				});
+				vscode.window
+					.showInformationMessage(message, "Dismiss", reportIssue, cancel)
+					.then((selection) => {
+						if (selection === reportIssue) {
+							vscode.env.openExternal(vscode.Uri.parse(newIssueUrl));
+						} else if (selection === cancel) {
+							terminate();
+						}
+					});
 
-			if (errorMessage !== undefined) {
-				vscode.window.showErrorMessage(errorMessage);
-			} else {
 				const dependencies: Dependency[] = getArrayFromObject(rawDependencies);
 				const devDependencies: Dependency[] = getArrayFromObject(rawDevDependencies);
 
