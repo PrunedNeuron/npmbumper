@@ -1,8 +1,9 @@
 {
 	"compilerOptions": {
 		"module": "commonjs",
-		"target": "es2020",
-		"lib": ["es2020", "ESNext", "DOM"],
+		"moduleResolution": "node",
+		"target": "es6",
+		"lib": ["es6", "DOM"],
 		"outDir": "out",
 		"sourceMap": true,
 		"rootDir": "src",
@@ -11,11 +12,11 @@
 		"noFallthroughCasesInSwitch": true,
 		"noUnusedParameters": true,
 		"noImplicitReturns": true,
-		"esModuleInterop": true,
 		"removeComments": true,
 		"noImplicitThis": true,
 		"noUnusedLocals": true,
-		"noImplicitAny": true
+		"noImplicitAny": true,
+		"typeRoots": ["src/typings"]
 	},
 	"include": ["src"]
 }
