@@ -39,12 +39,12 @@ jobs:
               with:
                   node-version: 12.x
             - name: Install dependencies
-              run: npm install
+              run: yarn
             - name: Release
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
                   VSCE_TOKEN: ${{ secrets.VSCE_PAT }}
-              run: npx semantic-release
+              run: yarn semantic-release
             # - name: VSCode release plugin
             #   uses: lannonbr/vsce-action@master
             #   env:
