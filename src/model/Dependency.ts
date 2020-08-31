@@ -11,13 +11,13 @@ export default class Dependency {
 		this.latestVersion = undefined;
 	}
 
-	async fetchLatestVersion() {
+	async fetchLatestVersion(): Promise<void> {
 		const response = (await axios(`https://registry.npmjs.org/${this.name}/latest`)).data;
 		// console.log(response);
 		this.latestVersion = response.version;
 	}
 
-	getObject() {
+	getObject(): Package {
 		return {
 			name: this.name,
 			currentVersion: this.currentVersion,
