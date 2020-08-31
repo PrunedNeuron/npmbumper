@@ -18,7 +18,7 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
 			const rawDependencies = packageJson["dependencies"];
 			const rawDevDependencies = packageJson["devDependencies"];
 
-			let errorMessage = undefined;
+			let errorMessage;
 
 			if (rawDependencies === undefined && rawDevDependencies === undefined) {
 				errorMessage =
