@@ -8,8 +8,6 @@ const statusBarItem = new StatusBarItem();
 
 export async function activate(context: vscode.ExtensionContext): Promise<void> {
 	const reportIssue = "Report issue";
-	const cancel = "Cancel";
-
 	const disposableBump: vscode.Disposable = vscode.commands.registerCommand(
 		"npm-bumper.bump",
 		async () => {
@@ -41,12 +39,10 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
 				}
 
 				vscode.window
-					.showInformationMessage(message, "Dismiss", reportIssue, cancel)
+					.showInformationMessage(message, "Dismiss", reportIssue)
 					.then((selection) => {
 						if (selection === reportIssue) {
 							vscode.env.openExternal(vscode.Uri.parse(newIssueUrl));
-						} else if (selection === cancel) {
-							terminate();
 						}
 					});
 
@@ -73,7 +69,7 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
 			if (cachedPackageJson === undefined) {
 				vscode.window.showWarningMessage("Could not find cached copy of package.json!");
 			} else {
-				writeJsonFile("package.json", JSON.stringify(cachedPackageJson, null, "\t"));
+				writeJsonFile("package.json", JSON.stringify(cachedPackageJson));
 			}
 		}
 	);
@@ -83,10 +79,6 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
 	context.subscriptions.push(disposableBump);
 	context.subscriptions.push(disposableUndo);
 	context.subscriptions.push(statusBarItem.get());
-}
-
-export function terminate(): void {
-	// Do nothing. For now.
 }
 
 export function deactivate(): void {
