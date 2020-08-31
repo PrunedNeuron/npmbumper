@@ -2,52 +2,39 @@ on:
     push:
         branches:
             - master
-        # paths:
-        #     - "src/**"
 
-name: Run tests
 jobs:
     test:
         name: Test
         strategy:
             matrix:
-                os: [macos-latest, ubuntu-latest, windows-latest]
+                os: [ubuntu-20.04]
         runs-on: ${{ matrix.os }}
         steps:
             - name: Checkout
               uses: actions/checkout@v2
             - name: Install Node.js
-              uses: actions/setup-node@v1
-              with:
-                  node-version: 12.x
+              uses: actions/setup-node@v2-beta
             - name: Install dependencies
-              run: yarn
+              run: npm install
             - name: Run headless tests
               uses: GabrielBB/xvfb-action@v1.2
               with:
-                  run: yarn test
+                  run: npm run test
 
     deploy:
         name: Release and publish
         needs: test
-        runs-on: ubuntu-latest
+        runs-on: ubuntu-20.04
         steps:
             - name: Checkout
               uses: actions/checkout@v2
             - name: Setup Node.js
-              uses: actions/setup-node@v1
-              with:
-                  node-version: 12.x
+              uses: actions/setup-node@v2-beta
             - name: Install dependencies
               run: npm install
             - name: Release
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
                   VSCE_TOKEN: ${{ secrets.VSCE_PAT }}
-              run: npx semantic-release
-            - name: Release extension to marketplace
-              uses: lannonbr/vsce-action@master
-              env:
-                  VSCE_PAT: ${{ secrets.VSCE_PAT }}
-              with:
-                  args: publish -p $VSCE_PAT
+              run: npm run semantic-release

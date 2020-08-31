@@ -1,16 +1,19 @@
 {
 	"branches": "master",
+	"npmPublish": false,
 	"verifyConditions": [
+		"semantic-release-vsce",
 		"@semantic-release/github"
 	],
+	"prepare": {
+		"path": "semantic-release-vsce",
+		"packageVsix": "npm-bumper.vsix"
+	},
 	"publish": [
-		"@semantic-release/github"
-	],
-	"success": [
-		"@semantic-release/github"
-	],
-	"fail": [
-		"@semantic-release/github"
-	],
-	"npmPublish": false
+		"semantic-release-vsce",
+		{
+			"path": "@semantic-release/github",
+			"assets": "npm-bumper.vsix"
+		}
+	]
 }

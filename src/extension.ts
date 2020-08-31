@@ -1,5 +1,3 @@
-import "./typings/types";
-
 import vscode from "vscode";
 
 import StatusBarItem from "./model/StatusBarItem";
