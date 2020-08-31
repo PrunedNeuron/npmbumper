@@ -9,7 +9,7 @@
     <img src="assets/img/npmbumper_logo.png" alt="Logo" width="80" height="80">
   </a> -->
 
-  <h3 align="center">NPM Bumper</h3>
+  <!-- <h3 align="center">NPM Bumper</h3> -->
 </p>
 
 
