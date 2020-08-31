@@ -43,7 +43,7 @@ jobs:
             - name: Release
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-                  VSCE_PAT: ${{ secrets.VSCE_PAT }}
+                  VSCE_TOKEN: ${{ secrets.VSCE_PAT }}
               run: npx semantic-release
             # - name: VSCode release plugin
             #   uses: lannonbr/vsce-action@master
