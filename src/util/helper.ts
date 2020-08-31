@@ -17,8 +17,10 @@ export async function packageJsonExists(): Promise<boolean> {
 
 // TODO: write to package.json
 export async function writeJsonFile(fileName: string, contents: string): Promise<void> {
+	const object = JSON.parse(contents);
+	const formattedJson = JSON.stringify(object, null, "\t");
 	const filePath = path.join(vscode.workspace.rootPath || "", fileName);
-	fs.writeFileSync(filePath, contents, "utf8");
+	fs.writeFileSync(filePath, formattedJson, "utf8");
 }
 
 export async function getPackageJson(): Promise<string> {
