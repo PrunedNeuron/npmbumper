@@ -1,9 +1,9 @@
 {
 	"compilerOptions": {
 		"module": "commonjs",
-		"target": "es2017",
+		"target": "es2020",
+		"lib": ["es2020"],
 		"outDir": "out",
-		"lib": ["es6", "esnext", "DOM"],
 		"sourceMap": true,
 		"rootDir": "src",
 		"strict": true,
@@ -15,8 +15,7 @@
 		"removeComments": true,
 		"noImplicitThis": true,
 		"noUnusedLocals": true,
-		"noImplicitAny": true,
-		"pretty": true
+		"noImplicitAny": true
 	},
-	"exclude": ["node_modules", ".vscode-test"]
+	"include": ["src"]
 }
