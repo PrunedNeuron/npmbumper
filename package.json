@@ -32,7 +32,8 @@
 		"workspaceContains:**/package.json",
 		"onCommand:npm-bumper.bump"
 	],
-	"main": "./dist/extension",
+	"main": "./dist/extension.js",
+	"types": "./src/typings/types.d.ts",
 	"contributes": {
 		"commands": [
 			{
