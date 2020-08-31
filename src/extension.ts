@@ -73,7 +73,7 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
 			if (cachedPackageJson === undefined) {
 				vscode.window.showWarningMessage("Could not find cached copy of package.json!");
 			} else {
-				writeJsonFile("package.json", JSON.stringify(cachedPackageJson));
+				writeJsonFile("package.json", JSON.stringify(cachedPackageJson, null, "\t"));
 			}
 		}
 	);
