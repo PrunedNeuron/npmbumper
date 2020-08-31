@@ -1,9 +1,7 @@
-//@ts-check
 "use strict";
 const path = require("path");
 const TerserPlugin = require("terser-webpack-plugin");
 
-/**@type {import('webpack').Configuration}*/
 const config = {
 	target: "node",
 	entry: "./src/extension.ts",
@@ -13,7 +11,6 @@ const config = {
 		libraryTarget: "commonjs2",
 		devtoolModuleFilenameTemplate: "../[resource-path]"
 	},
-	devtool: "source-map",
 	externals: {
 		vscode: "commonjs vscode"
 	},
@@ -51,4 +48,5 @@ const config = {
 		]
 	}
 };
+
 module.exports = config;
