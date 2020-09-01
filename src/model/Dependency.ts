@@ -1,7 +1,5 @@
 import axios from "axios";
 
-import { Package } from "../typings/types";
-
 export default class Dependency {
 	private name: string;
 	private currentVersion: string;

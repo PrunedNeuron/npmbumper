@@ -3,7 +3,6 @@ import path from "path";
 import vscode from "vscode";
 
 import Dependency from "../model/Dependency";
-import { Dependencies } from "../typings/types";
 
 export async function packageJsonExists(): Promise<boolean> {
 	if (vscode.workspace.rootPath) {

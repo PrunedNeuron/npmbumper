@@ -1,4 +1,19 @@
 {
+	"verifyConditions": [
+		"semantic-release-vsce",
+		"@semantic-release/github"
+	],
+	"prepare": {
+		"path": "semantic-release-vsce",
+		"packageVsix": "npm-bumper-${nextRelease.gitTag}.vsix"
+	},
+	"publish": [
+		"semantic-release-vsce",
+		{
+			"path": "@semantic-release/github",
+			"assets": "npm-bumper-${nextRelease.gitTag}.vsix"
+		}
+	],
 	"plugins": [
 		"@semantic-release/commit-analyzer",
 		"@semantic-release/release-notes-generator",
@@ -10,16 +25,10 @@
 			}
 		],
 		[
-			"@semantic-release/exec",
-			{
-				"prepareCmd": "yarn pack"
-			}
-		],
-		[
 			"@semantic-release/github",
 			{
 				"assets": [
-					"release/npm-bumper-${nextRelease.gitTag}.vsix"
+					"npm-bumper-${nextRelease.gitTag}.vsix"
 				]
 			}
 		],
