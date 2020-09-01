@@ -10,6 +10,7 @@
 		"allowSyntheticDefaultImports": true,
 		"noFallthroughCasesInSwitch": true,
 		"noUnusedParameters": true,
+		"esModuleInterop": true,
 		"noImplicitReturns": true,
 		"removeComments": true,
 		"noImplicitThis": true,
