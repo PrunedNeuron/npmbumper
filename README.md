@@ -1,13 +1,19 @@
 # NPM Bumper
 
-![License][license-badge]
-![Production][actions-badge]
-![CodeFactor Grade][codefactor-badge]
+[![License][license-badge]][license-url]
+[![semantic-release][semantic-release-badge]][semantic-release-url]
+[![Conventional Commits][conventional-commits-badge]][conventional-commits-url]
+<br />
+
+[![Production][actions-badge]][actions-url]
+[![CodeFactor Grade][codefactor-badge]][codefactor-url]
+[![GitHub release (latest by date)][github-releases-badge]][github-releases-url]
+
 <!-- PROJECT LOGO -->
 <br />
 <p align="center">
   <a href="#">
-    <img src="assets/images/icon.png" alt="Logo" width="80">
+    <img src="assets/images/logo.png" alt="Logo" width="80">
   </a>
 
   <h3 align="center">NPM Dependency Bumper</h3>
@@ -96,3 +102,12 @@ Github - [PrunedNeuron](https://github.com/PrunedNeuron)
 [actions-badge]: https://github.com/PrunedNeuron/npmbumper/workflows/.github/workflows/production.yml/badge.svg
 [codefactor-badge]: https://img.shields.io/codefactor/grade/github/PrunedNeuron/npmbumper
 [marketplace-url]: https://marketplace.visualstudio.com/items?itemName=ayushm.npm-bumper
+[semantic-release-badge]: https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg
+[semantic-release-url]: https://github.com/semantic-release/semantic-release
+[conventional-commits-badge]: https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg
+[conventional-commits-url]: https://www.conventionalcommits.org/
+[github-releases-badge]: https://img.shields.io/github/v/release/PrunedNeuron/npmbumper
+[codefactor-url]: https://www.codefactor.io/repository/github/prunedneuron/npmbumper
+[github-releases-url]: https://github.com/PrunedNeuron/npmbumper/releases
+[license-url]: https://github.com/PrunedNeuron/npmbumper/blob/master/LICENSE.md
+[actions-url]: https://github.com/PrunedNeuron/npmbumper/actions?query=workflow%3A.github%2Fworkflows%2Fproduction.yml
