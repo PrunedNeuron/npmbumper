@@ -1,8 +1,4 @@
 {
-	"extends": [
-		"config:base",
-		"group:all",
-		":disableRateLimiting",
-		":preserveSemverRanges"
-	]
+	"extends": ["config:base", "group:all", ":disableRateLimiting", ":preserveSemverRanges"],
+	"baseBranches": ["development"]
 }
