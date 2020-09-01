@@ -2,6 +2,7 @@
 	"name": "npm-bumper",
 	"displayName": "Dependency Bumper",
 	"description": "VSCode extension to automatically bump dependency versions in package.json.",
+	"icon": "assets/images/icon.png",
 	"author": {
 		"name": "ayush",
 		"email": "am@ayushm.dev",
@@ -42,8 +43,9 @@
 		]
 	},
 	"activationEvents": [
-		"workspaceContains:**/package.json",
-		"onCommand:npm-bumper.bump"
+		"workspaceContains:package.json",
+		"onCommand:npm-bumper.bump",
+		"onCommand:npm-bumper.undo"
 	],
 	"scripts": {
 		"vscode:prepublish": "webpack --mode production",
