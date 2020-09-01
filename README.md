@@ -1,6 +1,21 @@
 # NPM Bumper
 
-![example workflow name][actions-url]
+![License][license-badge]
+![Production][actions-badge]
+![CodeFactor Grade][codefactor-badge]
+<!-- PROJECT LOGO -->
+<br />
+<p align="center">
+  <a href="#">
+    <img src="assets/images/icon.png" alt="Logo" width="80">
+  </a>
+
+  <h3 align="center">NPM Dependency Bumper</h3>
+  <p align="center"><a href="https://marketplace.visualstudio.com/items?itemName=ayushm.npm-bumper">Install.</a></p>
+  <p align="center">
+   A <a href="https://marketplace.visualstudio.com/items?itemName=ayushm.npm-bumper">VSCode extension</a> that bumps the versions of your dependencies and devDependencies in <code>package.json</code>.
+  </p>
+</p>
 
 ## Table of Contents
 
@@ -8,6 +23,7 @@
 - [Usage](#usage)
 - [How it works](#how-it-works)
 - [Contributing](#contributing)
+- [Reporting issues and bugs](#report-issues)
 - [License](#license)
 - [Contact](#contact)
 
@@ -19,12 +35,20 @@ Update your dependencies and devDependencies in `package.json` with a single cli
 ## Usage
 
 1. Install
+```bash
+ext install ayushm.npm-bumper
+```
 2. Open a project with a `package.json` file
-3. Click the bump dependencies icon in the status bar
+3. Click the bump dependencies icon in the status bar that looks like this,
+
+<p align="center">
+	<img style="border-radius: 10%" src="assets/images/screenshot_icon.png" alt="Status Bar Icon" width="80">
+</p>
+
 4. ???
 5. Profit
 
-At the moment, the undo functionality is broken, however it is under active development. Until then, this extension will create a backup file named package.backup.json, just in case you don't like the output.
+**Note:** At the moment, the undo functionality is broken, however it is under active development. Until then, this extension will create a backup file named `package.backup.json`, just in case you don't like the output. Please delete the file if you do not need it.
 
 ## How it works
 
@@ -40,15 +64,18 @@ Contributions are what make the open source community such an amazing place to l
 
 1. Fork the Project
 2. Create your Feature Branch<br>
-  `git checkout -b feat/AmazingFeature`
+  `git checkout -b feature/AmazingFeature`
 3. Commit your Changes<br>
-  `git commit -m 'feat: Add some AmazingFeature'`
+  `git commit -m 'feature: Add some AmazingFeature'`
 4. Push to the Branch<br>
-  `git push origin feat/AmazingFeature`
+  `git push origin feature/AmazingFeature`
 5. <a href="https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/creating-a-pull-request">Open a Pull Request</a>
 
-Please follow the [conventional-commits](https://www.conventionalcommits.org/) specification while committing and creating pull requests.
+**Note:** If possible, please follow the [conventional-commits](https://www.conventionalcommits.org/) specification while committing and creating pull requests since it helps keep everything consistent.
 
+## Report issues
+
+Feel free to open a [new issue](https://github.com/PrunedNeuron/npmbumper/issues/new) on GitHub with information about what went wrong, what you expected and if possible, a screenshot or a description of the problem you faced.
 
 ## License
 
@@ -65,4 +92,7 @@ Website - [ayushm.dev](https://ayushm.dev)<br/>
 Github - [PrunedNeuron](https://github.com/PrunedNeuron)
 
 <!-- Links -->
-[actions-url]: https://github.com/PrunedNeuron/npmbumper/workflows/.github/workflows/actions.yml/badge.svg
+[license-badge]: https://img.shields.io/github/license/PrunedNeuron/npmbumper
+[actions-badge]: https://github.com/PrunedNeuron/npmbumper/workflows/.github/workflows/production.yml/badge.svg
+[codefactor-badge]: https://img.shields.io/codefactor/grade/github/PrunedNeuron/npmbumper
+[marketplace-url]: https://marketplace.visualstudio.com/items?itemName=ayushm.npm-bumper
