@@ -1,3 +1,10 @@
+## [1.1.1](https://github.com/PrunedNeuron/npmbumper/compare/v1.1.0...v1.1.1) (2020-09-02)
+
+
+### Bug Fixes
+
+* detect and preserve semver prefixes ([8bd3da9](https://github.com/PrunedNeuron/npmbumper/commit/8bd3da928fa3720c8b74d63deb668e1bc05df1e8))
+
 # [1.1.0](https://github.com/PrunedNeuron/npmbumper/compare/v1.0.0...v1.1.0) (2020-09-01)
 
 
