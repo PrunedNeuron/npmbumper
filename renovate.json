@@ -3,6 +3,8 @@
 		"config:base",
 		"group:all",
 		":disableRateLimiting",
-		":preserveSemverRanges"
-	]
+		":preserveSemverRanges",
+		":semanticCommits"
+	],
+	"baseBranches": ["development"]
 }

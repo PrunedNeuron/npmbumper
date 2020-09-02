@@ -7,14 +7,19 @@ export default class Dependency {
 
 	constructor(name: string, version: string) {
 		this.name = name;
-		this.currentVersion = version.replace("^", "");
+		this.currentVersion = version;
 		this.latestVersion = undefined;
 	}
 
 	async fetchLatestVersion(): Promise<void> {
 		const response = (await axios(`https://registry.npmjs.org/${this.name}/latest`)).data;
-		// console.log(response);
-		this.latestVersion = response.version;
+
+		// Preserve semver prefix
+		if (["^", "~"].includes(this.currentVersion[0])) {
+			this.latestVersion = this.currentVersion[0] + response.version;
+		} else {
+			this.latestVersion = response.version;
+		}
 	}
 
 	getObject(): Package {
