@@ -4,7 +4,7 @@ on:
             - master
         paths:
             - "src/**"
-            
+
 jobs:
     test:
         name: Test
