@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/PrunedNeuron/npmbumper/compare/v1.0.0...v1.1.0) (2020-09-01)
+
+
+### Features
+
+* added new icon logo ([2a7bb16](https://github.com/PrunedNeuron/npmbumper/commit/2a7bb163e5468cef9f0b290c6fa868a4ca399a98))
+
 # 1.0.0 (2020-09-01)
 
 
