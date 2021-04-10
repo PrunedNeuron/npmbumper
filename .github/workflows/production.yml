@@ -20,7 +20,7 @@ jobs:
             - name: Install dependencies
               run: yarn
             - name: Run headless tests
-              uses: GabrielBB/xvfb-action@v1.2
+              uses: GabrielBB/xvfb-action@v1.4
               with:
                   run: yarn test
 
